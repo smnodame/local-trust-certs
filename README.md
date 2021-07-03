@@ -1,7 +1,12 @@
 # Local Trust Certificates
-This allows you to run your local web server with a valid HTTPs but please note that this custom certificate will be valid only on the same machine that generate the cert
+This repo folks from mkcert repo [link](https://github.com/FiloSottile/mkcert)
+
+## How to build
+```
+go build ./mkcert/main.go -o generate-certs
+```
 
 ## How to run
 ```
-> sudo ./run.sh example.com v1.example.com v2.example.com
+> sudo ./generate-certs example.com v1.example.com v2.example.com -compose=./docker-compose.yml -caddy=./Caddyfile -service=https
 ```
