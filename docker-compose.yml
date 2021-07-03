@@ -6,5 +6,10 @@ services:
             - 80:80
             - 443:443
         
+        volumes:
+            - ./Caddyfile:/etc/caddy/Caddyfile
+            - ./localhost.pem:/etc/certs/localhost.crt
+            - ./localhost-key.pem:/etc/certs/localhost.key
+
     web:
         image: nginx:latest
