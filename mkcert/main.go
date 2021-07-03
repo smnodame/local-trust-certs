@@ -199,19 +199,19 @@ var Version string
 
 func main() {
 	var (
-		installFlag   = flag.Bool("install", false, "")
-		uninstallFlag = flag.Bool("uninstall", false, "")
-		pkcs12Flag    = flag.Bool("pkcs12", false, "")
-		ecdsaFlag     = flag.Bool("ecdsa", false, "")
-		clientFlag    = flag.Bool("client", false, "")
-		helpFlag      = flag.Bool("help", false, "")
-		carootFlag    = flag.Bool("CAROOT", false, "")
-		csrFlag       = flag.String("csr", "", "")
-		p12FileFlag   = flag.String("p12-file", "", "")
-		versionFlag   = flag.Bool("version", false, "")
-		compose_path  = flag.String("compose", "./docker-compose.yml", "relative path to docker-compose.yml")
-		caddy_path    = flag.String("caddy", "./Caddyfile", "relative path to Caddyfile")
-		service_name  = flag.String("service", "https", "https service name in docker-compose.yml")
+		installFlag    = flag.Bool("install", false, "")
+		uninstallFlag  = flag.Bool("uninstall", false, "")
+		pkcs12Flag     = flag.Bool("pkcs12", false, "")
+		ecdsaFlag      = flag.Bool("ecdsa", false, "")
+		clientFlag     = flag.Bool("client", false, "")
+		helpFlag       = flag.Bool("help", false, "")
+		carootFlag     = flag.Bool("CAROOT", false, "")
+		csrFlag        = flag.String("csr", "", "")
+		p12FileFlag    = flag.String("p12-file", "", "")
+		versionFlag    = flag.Bool("version", false, "")
+		composePathRaw = flag.String("compose", "./docker-compose.yml", "relative path to docker-compose.yml")
+		caddyPathRaw   = flag.String("caddy", "./Caddyfile", "relative path to Caddyfile")
+		serviceName    = flag.String("service", "https", "https service name in docker-compose.yml")
 	)
 
 	flag.Usage = func() {
@@ -220,9 +220,21 @@ func main() {
 	}
 	flag.Parse()
 
-	compose_dir := path.Dir(*compose_path)
-	certFileFlag := path.Join(compose_dir, "localhost.pem")
-	keyFileFlag := path.Join(compose_dir, "localhost-key.pem")
+	pwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	fmt.Println(pwd)
+
+	absComposePath := path.Join(pwd, *composePathRaw)
+
+	composeDir := path.Dir(absComposePath)
+	certFileFlag := path.Join(composeDir, "localhost.pem")
+	keyFileFlag := path.Join(composeDir, "localhost-key.pem")
+
+	composePath := path.Join(pwd, *composePathRaw)
+	caddyPath := path.Join(pwd, *caddyPathRaw)
 
 	if *helpFlag {
 		fmt.Print(shortUsage)
@@ -264,8 +276,8 @@ func main() {
 	}).Run(flag.Args())
 
 	if !(*installFlag) {
-		reconfig_caddyfile(*caddy_path)
-		reconfig_composefile(*service_name, *compose_path)
+		reconfig_caddyfile(caddyPath)
+		reconfig_composefile(*serviceName, composePath)
 	}
 }
 
