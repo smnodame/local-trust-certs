@@ -198,7 +198,6 @@ const advancedUsage = `Advanced options:
 var Version string
 
 func main() {
-	log.SetFlags(0)
 	var (
 		installFlag   = flag.Bool("install", false, "")
 		uninstallFlag = flag.Bool("uninstall", false, "")
@@ -215,15 +214,16 @@ func main() {
 		service_name  = flag.String("service", "https", "https service name in docker-compose.yml")
 	)
 
-	compose_dir := path.Dir(*compose_path)
-	certFileFlag := path.Join(compose_dir, "localhost.pem")
-	keyFileFlag := path.Join(compose_dir, "localhost-key.pem")
-
 	flag.Usage = func() {
 		fmt.Fprint(flag.CommandLine.Output(), shortUsage)
 		fmt.Fprintln(flag.CommandLine.Output(), `For more options, run "mkcert -help".`)
 	}
 	flag.Parse()
+
+	compose_dir := path.Dir(*compose_path)
+	certFileFlag := path.Join(compose_dir, "localhost.pem")
+	keyFileFlag := path.Join(compose_dir, "localhost-key.pem")
+
 	if *helpFlag {
 		fmt.Print(shortUsage)
 		fmt.Print(advancedUsage)
@@ -260,11 +260,13 @@ func main() {
 	(&mkcert{
 		installMode: *installFlag, uninstallMode: *uninstallFlag, csrPath: *csrFlag,
 		pkcs12: *pkcs12Flag, ecdsa: *ecdsaFlag, client: *clientFlag,
-		certFile: *certFileFlag, keyFile: *keyFileFlag, p12File: *p12FileFlag,
+		certFile: certFileFlag, keyFile: keyFileFlag, p12File: *p12FileFlag,
 	}).Run(flag.Args())
 
-	reconfig_caddyfile(*caddy_path)
-	reconfig_composefile(*service_name, *compose_path)
+	if !(*installFlag) {
+		reconfig_caddyfile(*caddy_path)
+		reconfig_composefile(*service_name, *compose_path)
+	}
 }
 
 const rootName = "rootCA.pem"

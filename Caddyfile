@@ -5,8 +5,10 @@ https://testing.com {
 
 https://a.testing.com {
     reverse_proxy   web:80
+    tls /etc/certs/localhost.crt /etc/certs/localhost.key
 }
 
 https://b.testing.com {
     reverse_proxy   web:80
+    tls /etc/certs/localhost.crt /etc/certs/localhost.key
 }
