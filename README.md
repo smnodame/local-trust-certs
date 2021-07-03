@@ -12,3 +12,4 @@ cd mkcert && go build -ldflags "-X main.Version=1.0.0"
 > ./mkcert -install
 > ./mkcert -compose=../docker-compose.yml -caddy=../Caddyfile -service=https example.com v1.example.com v2.example.com 
 ```
+

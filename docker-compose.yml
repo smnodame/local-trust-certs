@@ -7,9 +7,9 @@ services:
             - 443:443
         
         volumes:
-            - ./Caddyfile:/etc/caddy/Caddyfile
             - ./localhost.pem:/etc/certs/localhost.crt
             - ./localhost-key.pem:/etc/certs/localhost.key
+            - ./Caddyfile:/etc/caddy/Caddyfile
 
     web:
         image: nginx:latest

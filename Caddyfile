@@ -1,9 +1,9 @@
-https://sm.com {
-    tls /etc/certs/localhost.crt /etc/certs/localhost.key
+https://testing.com {
     reverse_proxy   web:80
+    tls /etc/certs/localhost.crt /etc/certs/localhost.key
 }
 
-https://a.sm.com {
-    tls /etc/certs/localhost.crt /etc/certs/localhost.key
+https://a.testing.com {
     reverse_proxy   web:80
+    tls /etc/certs/localhost.crt /etc/certs/localhost.key
 }
