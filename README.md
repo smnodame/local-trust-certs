@@ -8,7 +8,7 @@ cd mkcert && go build -ldflags "-X main.Version=1.0.0"
 
 ## How to run
 ```
-> cd mkcert
+> cd artifacts # select binary depending on your os
 > ./mkcert -install
 > ./mkcert -compose=../docker-compose.yml -caddy=../Caddyfile -service=https example.com v1.example.com v2.example.com 
 ```
