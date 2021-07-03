@@ -3,10 +3,10 @@ This repo folks from mkcert repo [link](https://github.com/FiloSottile/mkcert)
 
 ## How to build
 ```
-go build ./mkcert/main.go -o generate-certs
+cd mkcert && go build -o generate-certs
 ```
 
 ## How to run
 ```
-> sudo ./generate-certs example.com v1.example.com v2.example.com -compose=./docker-compose.yml -caddy=./Caddyfile -service=https
+> cd ./mkcert sudo ./generate-certs example.com v1.example.com v2.example.com -compose=../docker-compose.yml -caddy=../Caddyfile -service=https
 ```

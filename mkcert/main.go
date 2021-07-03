@@ -19,6 +19,7 @@ import (
 	"os"
 	"os/exec"
 	"os/user"
+	"path"
 	"path/filepath"
 	"regexp"
 	"runtime"
@@ -207,14 +208,16 @@ func main() {
 		helpFlag      = flag.Bool("help", false, "")
 		carootFlag    = flag.Bool("CAROOT", false, "")
 		csrFlag       = flag.String("csr", "", "")
-		certFileFlag  = flag.String("cert-file", "", "")
-		keyFileFlag   = flag.String("key-file", "", "")
 		p12FileFlag   = flag.String("p12-file", "", "")
 		versionFlag   = flag.Bool("version", false, "")
 		compose_path  = flag.String("compose", "./docker-compose.yml", "relative path to docker-compose.yml")
 		caddy_path    = flag.String("caddy", "./Caddyfile", "relative path to Caddyfile")
 		service_name  = flag.String("service", "https", "https service name in docker-compose.yml")
 	)
+
+	compose_dir := path.Dir(*compose_path)
+	certFileFlag := path.Join(compose_dir, "localhost.pem")
+	keyFileFlag := path.Join(compose_dir, "localhost-key.pem")
 
 	flag.Usage = func() {
 		fmt.Fprint(flag.CommandLine.Output(), shortUsage)
