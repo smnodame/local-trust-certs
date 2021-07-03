@@ -51,13 +51,9 @@ func reconfig_caddyfile(caddyfile_path string) {
 			if strings.Contains(lines[index], "\t") {
 				indent = "\t"
 			}
-		}
-
-		if strings.Contains(line, "tls") {
+		} else if strings.Contains(line, "tls") {
 			continue
-		}
-
-		if strings.Contains(line, "}") {
+		} else if strings.Contains(line, "}") {
 			new_lines = append(new_lines, indent+new_tls_config)
 		}
 
@@ -121,7 +117,7 @@ func reconfig_composefile(service string, compose_path string) {
 
 			// started new service block
 			if strings.Count(line, indent) == 1 {
-				if has_volumns == false {
+				if has_volumns {
 					new_lines = append(new_lines, indent+indent+"volumes:")
 					new_lines = append(new_lines, indent+indent+indent+pem_config)
 					new_lines = append(new_lines, indent+indent+indent+key_pem_config)
